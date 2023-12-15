@@ -46,19 +46,11 @@ class WLRMAwALS4Sparse:
 
     @staticmethod
     def calculate_solution_rank(A, B):
-        # Use the following method to calculate solution rank.
-        # Decompose $A$, i.e. $A=U_A D_A V_A^{\top}$.
-        # Multiply $\tilde{B}=B V_A D_A$.
-        # Decompose $\tilde{B}=U_B D_B V_B^{\top}$.
-
-        # Decompose $A$, i.e. $A=U_A D_A V_A^{\top}$.
+        # calculate the solution rank.
         U_A, D_A, V_A = np.linalg.svd(A)
-        # Multiply $\tilde{B}=B V_A D_A$.
         B_tilde = B @ V_A @ np.diag(D_A)
-        # Decompose $\tilde{B}=U_B D_B V_B^{\top}$.
         U_B, D_B, V_B = np.linalg.svd(B_tilde)
 
-        # return number of nonzeros(abs > 1e-8) in D_B.
         return np.sum(np.abs(D_B) > 1e-8)
 
     def _solver_baseline(self, A0, B0, verbose=False):
@@ -232,12 +224,6 @@ class WLRMAwALS4Sparse:
 
 
 def create_ratings_matrix(file_path):
-    """
-    This function reads a ratings file and converts it into a user-movie ratings matrix.
-
-    :param file_path: Path to the file containing ratings in the format UserID::MovieID::Rating::Timestamp
-    :return: A 2D numpy array representing the user-movie ratings matrix
-    """
     # Load the data
     ratings_data = pd.read_csv(file_path, sep='::', engine='python', header=None, names=['UserID', 'MovieID', 'Rating', 'Timestamp'])
     # Pivot the table to create the matrix

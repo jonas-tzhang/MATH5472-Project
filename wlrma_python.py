@@ -63,7 +63,6 @@ class WLRMASolver:
         return U[:, :len(D)] @ np.diag(np.maximum(D - lamda, 0)) @ V[:len(D), :]
 
     def loss(self, X):
-        # \ell(X)=\|\sqrt{W} *(M-X)\|_F^2. Directly implement the formula.
         base_loss = np.linalg.norm(np.sqrt(self.W) * (self.M - X), 'fro') ** 2
 
         if self.relaxation:
@@ -99,11 +98,8 @@ class WLRMASolver:
         self.losses.append(self.loss(X))
         self.delta.append(1)
         for i in range(1, max_iter+1):
-            # V^{(i)}=X^{(i)}+\frac{i-1}{i+2}\left(X^{(i)}-X^{(i-1)}\right)
             V = X + (i - 1) / (i + 2) * (X - X_prev)
-            # Y^{(i)}=t W * M+(1-t W) * V^{(i)}
             Y = W * M + (1 - W) * V
-            # X^{(i+1)}=\operatorname{SVD}_k\left(Y^{(i)}\right)
             X_prev = X
             X = self.svd_threshold(Y, self.lamda) if self.relaxation else self.svd_k(Y, self.k)
             self.losses.append(self.loss(X))
