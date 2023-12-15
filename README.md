@@ -9,8 +9,7 @@ This repo contains the following codes:
 - `movielens_example.ipynb`: Jupyter Notebook that runs the MovieLens example.
 
 ## Other Files
-The folder `data`  and the report for 
-- `data`: contains the data needed to run MovieLens example.
+- `data`: the folder contains the data needed to run MovieLens example.
 - `MATH5472 Project Report.pdf`: the report for this project. 
 
 ## How to Run the Demos
